@@ -9,7 +9,5 @@ import java.util.Optional;
 
 @Repository("user-repository")
 public interface UserRepository extends MongoRepository<User, String> {
-	public User findByFirstNameAndLastName(String firstName, String lastName);
-
 	Optional<User> findBy_id(ObjectId id);
 }

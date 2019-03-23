@@ -51,15 +51,4 @@ public class UserController{
 		}
 	}
 
-	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> updateUser(@PathVariable("id") ObjectId _id, @Valid @RequestBody User user,
-	                                    BindingResult bindingResult){
-		if(!bindingResult.hasErrors()){
-			user.set_id(_id);
-			return new ResponseEntity<>(userIService.save(user), HttpStatus.OK);
-		}else{
-			return new ResponseEntity<>(new CustomErrorType("Unable to save"), HttpStatus.BAD_REQUEST);
-		}
-	}
-
 }
