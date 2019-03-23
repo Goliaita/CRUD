@@ -27,7 +27,7 @@ public class User{
 	}
 
 	public String get_id() {
-		return _id.toStringMongod();
+		return (_id == null ? null : _id.toHexString());
 	}
 	public void set_id(ObjectId _id) {
 		this._id = _id;

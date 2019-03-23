@@ -2,9 +2,14 @@ package it.unisalento.crud.crud.repository;
 
 import it.unisalento.crud.crud.models.User;
 import org.bson.types.ObjectId;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserRepository extends CrudRepository<User, String>{
-	public User findBy_id(ObjectId id);
+import java.util.Optional;
+
+@Repository("user-repository")
+public interface UserRepository extends MongoRepository<User, String> {
 	public User findByFirstNameAndLastName(String firstName, String lastName);
+
+	Optional<User> findBy_id(ObjectId id);
 }

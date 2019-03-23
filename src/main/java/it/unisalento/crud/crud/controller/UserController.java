@@ -1,7 +1,6 @@
 package it.unisalento.crud.crud.controller;
 
 
-import com.mongodb.MongoException;
 import it.unisalento.crud.crud.IService.UserIService;
 import it.unisalento.crud.crud.exception.CustomErrorType;
 import it.unisalento.crud.crud.models.User;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController
+@RestController @CrossOrigin
 public class UserController{
 
 	@Autowired
@@ -32,7 +31,9 @@ public class UserController{
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public ResponseEntity<?> saveUser(@Valid @RequestBody User user, BindingResult bindingResult){
 		if(!bindingResult.hasErrors()){
-			user.set_id(ObjectId.get());
+			if (user.get_id() == null) {
+				user.set_id(ObjectId.get());
+			}
 			return new ResponseEntity<>(userIService.save(user), HttpStatus.CREATED);
 		}else{
 			return new ResponseEntity<>(new CustomErrorType("Unable to create user. Bad request"),
@@ -45,7 +46,7 @@ public class UserController{
 		try{
 			userIService.delete(_id);
 			return new ResponseEntity<>("Deleted", HttpStatus.OK);
-		}catch(MongoException ex){
+		}catch(Exception ex){
 			return new ResponseEntity<>(new CustomErrorType("User not Found"), HttpStatus.NOT_FOUND);
 		}
 	}

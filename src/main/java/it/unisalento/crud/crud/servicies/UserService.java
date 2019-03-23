@@ -1,24 +1,21 @@
 package it.unisalento.crud.crud.servicies;
 
+import org.bson.types.ObjectId;
 import it.unisalento.crud.crud.IService.UserIService;
+import it.unisalento.crud.crud.exception.UserNotFoundException;
 import it.unisalento.crud.crud.models.User;
 import it.unisalento.crud.crud.repository.UserRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("user-service")
 public class UserService implements UserIService{
 
-	private UserRepository userRepository;
-
 	@Autowired
-	public UserService(UserRepository userRepository){
-		this.userRepository = userRepository;
-	}
+	private UserRepository userRepository;
 
 	@Override
 	public List<User> findAll(){
@@ -33,8 +30,9 @@ public class UserService implements UserIService{
 	}
 
 	@Override
-	public void delete(String _id){
-		userRepository.delete(userRepository.findBy_id(new ObjectId(_id)));
+	public void delete(String _id) throws UserNotFoundException {
+		User u = userRepository.findBy_id(new ObjectId(_id)).orElseThrow(() -> new UserNotFoundException());
+		userRepository.delete(u);
 	}
 
 }
